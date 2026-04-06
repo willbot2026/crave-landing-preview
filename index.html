@@ -239,15 +239,22 @@
 
   .reason-cta {
     display: inline-block;
-    color: #2d1b69;
-    font-size: 15px;
-    font-weight: 700;
+    background: #2d1b69;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
     text-decoration: none;
-    border-bottom: 2px solid #f5c518;
-    padding-bottom: 2px;
-    transition: color 0.2s;
+    padding: 16px 32px;
+    border-radius: 50px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(45,27,105,0.25);
+    margin-top: 8px;
   }
-  .reason-cta:hover { color: #f5c518; }
+  .reason-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(45,27,105,0.35);
+    color: #fff;
+  }
 
   /* ─── DIVIDER ─── */
   .section-divider {
