@@ -1,3 +1,66 @@
+
+/* === SHOPIFY THEME BREAKOUT OVERRIDES === */
+/* Break out of Shopify's constrained page-width container */
+.hero,
+.photo-section,
+.testimonials,
+.urgency-section,
+.guarantee,
+.final-cta,
+.announcement-bar,
+.section-divider {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  position: relative !important;
+}
+
+/* Full-width sections that need edge-to-edge backgrounds */
+.reason {
+  max-width: 680px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.comparison {
+  max-width: 700px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.product-section {
+  max-width: 680px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Kill Shopify's font overrides */
+.hero *, .reason *, .testimonials *, .urgency-section *, .product-section *, .guarantee *, .comparison *, .final-cta *, .announcement-bar * {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+}
+
+/* Ensure headings aren't transformed by theme */
+h1, h2, h3 {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* Override theme link styling */
+a.hero-cta, a.reason-cta, a.urgency-cta {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+a.hero-cta { color: #1a1a2e !important; }
+a.reason-cta { color: #fff !important; }
+a.urgency-cta { color: #1a1a2e !important; }
+
+/* Override Shopify's .rte styles */
+.rte .hero, .rte .reason, .rte .testimonials, .rte .urgency-section, .rte .product-section {
+  font-size: inherit !important;
+}
+
+/* === END SHOPIFY OVERRIDES === */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
