@@ -64,8 +64,32 @@ a.urgency-cta { color: #1a1a2e !important; }
 .text-block h1,
 .page-title,
 .page-header h1,
-.section > .page-width-content > .spacing-style > .text-block {
+.section > .page-width-content > .spacing-style > .text-block,
+.layout-panel-flex > .spacing-style.text-block {
   display: none !important;
+}
+
+/* Kill extra spacing from Shopify theme wrapper */
+.section.page-width-content > .layout-panel-flex {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  gap: 0 !important;
+}
+.section.page-width-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.shopify-section.section-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.shopify-block.rte {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+main.content-for-layout {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 /* === END SHOPIFY OVERRIDES === */
