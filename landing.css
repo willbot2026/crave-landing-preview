@@ -92,6 +92,14 @@ main.content-for-layout {
   margin: 0 !important;
 }
 
+
+/* Hide Shopify theme's own announcement bar (yellow header) — our LP has its own */
+.shopify-section-group-header-group .announcement-bar,
+.shopify-section-group-header-group aside.announcement-bar,
+div[class*="shopify-section-group-header"] {
+  display: none !important;
+}
+
 /* === END SHOPIFY OVERRIDES === */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
