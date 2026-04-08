@@ -1,5 +1,18 @@
 // Crave Landing Page Interactivity
 (function() {
+  // ─── AUTO-APPLY NIGHTFIX DISCOUNT ───
+  // If the discount cookie isn't set, silently apply it via a hidden iframe
+  if (document.cookie.indexOf('discount_code=NIGHTFIX') === -1) {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = '/discount/NIGHTFIX';
+    document.body.appendChild(iframe);
+    // Clean up after it loads
+    iframe.onload = function() {
+      setTimeout(function() { iframe.remove(); }, 1000);
+    };
+  }
+
   var tiers = document.querySelectorAll('.tier-option');
   var flavors = document.querySelectorAll('.flavor-chip');
   var cartBtn = document.querySelector('.add-to-cart');
