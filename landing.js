@@ -115,7 +115,7 @@
     '<div class="crave-cart-items"></div>' +
     '<div class="crave-cart-footer">' +
       '<div class="crave-cart-subtotal"><span>Subtotal</span><span class="crave-cart-total">$0.00</span></div>' +
-      '<a href="/checkout" class="crave-cart-checkout">Checkout</a>' +
+      '<a href="/discount/NIGHTFIX?redirect=/checkout" class="crave-cart-checkout">Checkout</a>' +
       '<div class="crave-cart-shipping">Free shipping on orders $40+</div>' +
     '</div>';
   document.body.appendChild(drawer);
