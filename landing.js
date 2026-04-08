@@ -61,58 +61,64 @@
     });
   }
 
-  // ─── TRUST BADGES MARQUEE ───
+  // ─── MARQUEE HELPER ───
+  // Inject keyframes once
+  var style = document.createElement('style');
+  style.textContent = '@keyframes badgeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
+  document.head.appendChild(style);
+
+  function makeMarquee(container, track, speed) {
+    speed = speed || 15;
+    // Style container
+    container.style.overflow = 'hidden';
+    container.style.whiteSpace = 'nowrap';
+    container.style.padding = '20px 0';
+
+    // Style track
+    track.style.display = 'inline-flex';
+    track.style.gap = '32px';
+    track.style.alignItems = 'center';
+    track.style.flexWrap = 'nowrap';
+
+    // Duplicate spans for seamless loop
+    var spans = track.querySelectorAll('span');
+    spans.forEach(function(sp) {
+      track.appendChild(sp.cloneNode(true));
+    });
+
+    function apply() {
+      if (window.innerWidth < 640) {
+        track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
+        track.style.justifyContent = '';
+        track.style.flexWrap = 'nowrap';
+        container.style.whiteSpace = 'nowrap';
+        container.style.textAlign = 'left';
+      } else {
+        track.style.animation = 'none';
+        track.style.justifyContent = 'center';
+        track.style.flexWrap = 'wrap';
+        container.style.whiteSpace = 'normal';
+        container.style.textAlign = 'center';
+      }
+    }
+
+    apply();
+    window.addEventListener('resize', apply);
+  }
+
+  // ─── TRUST BADGES MARQUEE (after urgency section) ───
   var allSections = document.querySelectorAll('.reason');
-  var badgeSection = null;
   allSections.forEach(function(s) {
     if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
-      badgeSection = s;
+      var div = s.querySelector('div');
+      if (div) makeMarquee(s, div, 15);
     }
   });
 
-  if (badgeSection) {
-    var badgeDiv = badgeSection.querySelector('div');
-    if (badgeDiv) {
-      // Style container
-      badgeSection.style.overflow = 'hidden';
-      badgeSection.style.whiteSpace = 'nowrap';
-      badgeSection.style.padding = '20px 0';
-
-      badgeDiv.style.display = 'inline-flex';
-      badgeDiv.style.gap = '32px';
-      badgeDiv.style.alignItems = 'center';
-      badgeDiv.style.flexWrap = 'nowrap';
-
-      // Duplicate spans for seamless loop
-      var spans = badgeDiv.querySelectorAll('span');
-      spans.forEach(function(sp) {
-        badgeDiv.appendChild(sp.cloneNode(true));
-      });
-
-      // Inject keyframes
-      var style = document.createElement('style');
-      style.textContent = '@keyframes badgeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
-      document.head.appendChild(style);
-
-      // Apply animation based on viewport
-      function applyMarquee() {
-        if (window.innerWidth < 640) {
-          badgeDiv.style.animation = 'badgeScroll 15s linear infinite';
-          badgeDiv.style.justifyContent = '';
-          badgeDiv.style.flexWrap = 'nowrap';
-          badgeSection.style.whiteSpace = 'nowrap';
-          badgeSection.style.textAlign = 'left';
-        } else {
-          badgeDiv.style.animation = 'none';
-          badgeDiv.style.justifyContent = 'center';
-          badgeDiv.style.flexWrap = 'wrap';
-          badgeSection.style.whiteSpace = 'normal';
-          badgeSection.style.textAlign = 'center';
-        }
-      }
-
-      applyMarquee();
-      window.addEventListener('resize', applyMarquee);
-    }
+  // ─── PRODUCT TRUST MARQUEE (below buy box) ───
+  var productTrust = document.querySelector('.product-trust');
+  if (productTrust) {
+    var parent = productTrust.parentElement;
+    makeMarquee(productTrust, productTrust, 12);
   }
 })();
