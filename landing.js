@@ -68,4 +68,50 @@
       }
     });
   }
+
+  // ─── TRUST BADGES MARQUEE (mobile only) ───
+  // Find the trust badges section by looking for "Dessert-Level Taste" text
+  var allSections = document.querySelectorAll('.reason');
+  var badgeSection = null;
+  allSections.forEach(function(s) {
+    if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
+      badgeSection = s;
+    }
+  });
+
+  if (badgeSection) {
+    var badgeDiv = badgeSection.querySelector('div');
+    if (badgeDiv) {
+      // Style the container for marquee
+      badgeSection.style.overflow = 'hidden';
+      badgeSection.style.whiteSpace = 'nowrap';
+      badgeSection.style.padding = '20px 0';
+      
+      badgeDiv.style.display = 'inline-flex';
+      badgeDiv.style.gap = '32px';
+      badgeDiv.style.alignItems = 'center';
+      badgeDiv.style.flexWrap = 'nowrap';
+
+      // Duplicate the badges for seamless loop
+      var spans = badgeDiv.querySelectorAll('span');
+      var separator = '\u00a0\u00a0\u00b7\u00b7\u00b7\u00a0\u00a0';
+      spans.forEach(function(sp) {
+        var clone = sp.cloneNode(true);
+        badgeDiv.appendChild(clone);
+      });
+
+      // Add CSS animation for mobile only
+      var style = document.createElement('style');
+      style.textContent = '' +
+        '@keyframes badgeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }' +
+        '@media (max-width: 639px) {' +
+        '  #trust-badges div { animation: badgeScroll 15s linear infinite !important; }' +
+        '}' +
+        '@media (min-width: 640px) {' +
+        '  #trust-badges { text-align: center !important; }' +
+        '  #trust-badges div { justify-content: center !important; flex-wrap: wrap !important; white-space: normal !important; }' +
+        '}';
+      document.head.appendChild(style);
+    }
+  }
 })();
