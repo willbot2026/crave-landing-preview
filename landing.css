@@ -769,3 +769,9 @@ div[class*="shopify-section-group-header"] {
     .reason h2 { font-size: 30px; }
     .testimonial-grid { grid-template-columns: 1fr 1fr; }
   }
+/* Center product trust badges */
+.product-trust {
+  text-align: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
