@@ -62,25 +62,22 @@
   }
 
   // ─── MARQUEE HELPER ───
-  // Inject keyframes once
   var style = document.createElement('style');
   style.textContent = '@keyframes badgeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
   document.head.appendChild(style);
 
   function makeMarquee(container, track, speed) {
     speed = speed || 15;
-    // Style container
     container.style.overflow = 'hidden';
     container.style.whiteSpace = 'nowrap';
     container.style.padding = '20px 0';
 
-    // Style track
     track.style.display = 'inline-flex';
-    track.style.gap = '32px';
     track.style.alignItems = 'center';
     track.style.flexWrap = 'nowrap';
+    track.style.gap = '32px';
 
-    // Duplicate spans for seamless loop
+    // Duplicate spans for seamless mobile loop
     var spans = track.querySelectorAll('span');
     spans.forEach(function(sp) {
       track.appendChild(sp.cloneNode(true));
@@ -88,25 +85,53 @@
 
     function apply() {
       if (window.innerWidth < 640) {
+        // Mobile: scrolling marquee
         track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
         track.style.justifyContent = '';
         track.style.flexWrap = 'nowrap';
+        track.style.gap = '32px';
         container.style.whiteSpace = 'nowrap';
         container.style.textAlign = 'left';
       } else {
+        // Desktop: single line, evenly spaced, no animation
         track.style.animation = 'none';
-        track.style.justifyContent = 'center';
-        track.style.flexWrap = 'wrap';
-        container.style.whiteSpace = 'normal';
+        track.style.display = 'flex';
+        track.style.justifyContent = 'space-evenly';
+        track.style.flexWrap = 'nowrap';
+        track.style.gap = '0';
+        container.style.whiteSpace = 'nowrap';
         container.style.textAlign = 'center';
+        container.style.overflow = 'visible';
+
+        // Hide duplicate spans on desktop (only show originals)
+        var allSpans = track.querySelectorAll('span');
+        var half = allSpans.length / 2;
+        for (var i = 0; i < allSpans.length; i++) {
+          allSpans[i].style.display = i < half ? '' : 'none';
+        }
       }
     }
 
-    apply();
-    window.addEventListener('resize', apply);
+    // On mobile, make sure all spans are visible
+    function showAllSpans() {
+      var allSpans = track.querySelectorAll('span');
+      for (var i = 0; i < allSpans.length; i++) {
+        allSpans[i].style.display = '';
+      }
+    }
+
+    function applyFull() {
+      if (window.innerWidth < 640) {
+        showAllSpans();
+      }
+      apply();
+    }
+
+    applyFull();
+    window.addEventListener('resize', applyFull);
   }
 
-  // ─── TRUST BADGES MARQUEE (after urgency section) ───
+  // ─── TRUST BADGES MARQUEE ───
   var allSections = document.querySelectorAll('.reason');
   allSections.forEach(function(s) {
     if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
@@ -115,10 +140,9 @@
     }
   });
 
-  // ─── PRODUCT TRUST MARQUEE (below buy box) ───
+  // ─── PRODUCT TRUST MARQUEE ───
   var productTrust = document.querySelector('.product-trust');
   if (productTrust) {
-    var parent = productTrust.parentElement;
     makeMarquee(productTrust, productTrust, 12);
   }
 })();
