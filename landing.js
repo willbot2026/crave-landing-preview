@@ -109,17 +109,61 @@
             if (newDrawer && typeof newDrawer.toggleDialog === 'function') {
               newDrawer.toggleDialog();
             } else {
-              // Fallback: click the trigger
               var trigger = container.querySelector('[data-testid="cart-drawer-trigger"]');
               if (trigger) trigger.click();
             }
+            // Inject discount info into the drawer
+            setTimeout(function() { injectDiscountDisplay(); }, 200);
           }
         }
       })
       .catch(function() {
-        // Fallback: just click cart icon
         var btn = document.querySelector('[data-testid="cart-drawer-trigger"]');
         if (btn) btn.click();
+      });
+  }
+
+  // ─── INJECT DISCOUNT DISPLAY INTO CART DRAWER ───
+  function injectDiscountDisplay() {
+    fetch('/cart.js')
+      .then(function(r) { return r.json(); })
+      .then(function(cart) {
+        if (!cart.cart_level_discount_applications || cart.cart_level_discount_applications.length === 0) return;
+        
+        var discount = cart.cart_level_discount_applications[0];
+        var savedAmount = (discount.total_allocated_amount / 100).toFixed(2);
+        var originalTotal = (cart.original_total_price / 100).toFixed(2);
+        var newTotal = (cart.total_price / 100).toFixed(2);
+        
+        // Find the cart drawer's subtotal/footer area
+        var drawer = document.querySelector('cart-drawer-component');
+        if (!drawer) return;
+        
+        // Remove any existing discount display
+        var existing = drawer.querySelector('.crave-discount-display');
+        if (existing) existing.remove();
+        
+        // Create discount display element
+        var discountEl = document.createElement('div');
+        discountEl.className = 'crave-discount-display';
+        discountEl.style.cssText = 'padding:12px 20px;background:#f0fdf4;border-top:1px solid #bbf7d0;font-family:Inter,-apple-system,sans-serif;';
+        discountEl.innerHTML = '' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+            '<span style="font-size:13px;font-weight:700;color:#166534;">\uD83C\uDF89 ' + discount.title + ' (' + discount.value + '% off)</span>' +
+            '<span style="font-size:13px;font-weight:700;color:#166534;">-$' + savedAmount + '</span>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-size:12px;color:#888;text-decoration:line-through;">$' + originalTotal + '</span>' +
+            '<span style="font-size:16px;font-weight:800;color:#1a1a2e;">$' + newTotal + '</span>' +
+          '</div>';
+        
+        // Insert before the checkout button or at the bottom of the drawer
+        var footer = drawer.querySelector('[class*="footer"], [class*="subtotal"], [class*="checkout"]');
+        if (footer && footer.parentElement) {
+          footer.parentElement.insertBefore(discountEl, footer);
+        } else {
+          drawer.appendChild(discountEl);
+        }
       });
   }
 
