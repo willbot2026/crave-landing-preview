@@ -24,6 +24,14 @@
     [42937300058202, 43040536789082, 43040541278298]
   ];
 
+  // Box images per flavor: Cookie Dough, Caramel Crisp, Cookies & Cream, Variety Pack
+  var boxImages = [
+    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-cookie-dough.jpg?v=1775671572',
+    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-caramel-crisp.jpg?v=1775671574',
+    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-cookies-cream.jpg?v=1775671575',
+    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-variety-pack.jpg?v=1775671577'
+  ];
+
   var priceMap = [
     ['36.99', '69.99', '102.99'],
     ['36.99', '69.99', '102.99'],
@@ -33,6 +41,31 @@
 
   var selectedTier = 0;
   var selectedFlavor = 0;
+
+  // ─── CREATE PRODUCT IMAGE IN BUY BOX ───
+  var productSection = document.querySelector('.product-section');
+  var flavorSelector = productSection ? productSection.querySelector('.flavor-selector') : null;
+  var productImg = null;
+  if (flavorSelector) {
+    var imgContainer = document.createElement('div');
+    imgContainer.style.cssText = 'text-align:center;margin-bottom:24px;';
+    productImg = document.createElement('img');
+    productImg.src = boxImages[0];
+    productImg.alt = 'Product box';
+    productImg.style.cssText = 'max-width:280px;width:100%;border-radius:12px;transition:opacity 0.3s;';
+    imgContainer.appendChild(productImg);
+    flavorSelector.parentNode.insertBefore(imgContainer, flavorSelector);
+  }
+
+  function updateProductImage() {
+    if (productImg) {
+      productImg.style.opacity = '0';
+      setTimeout(function() {
+        productImg.src = boxImages[selectedFlavor];
+        productImg.style.opacity = '1';
+      }, 150);
+    }
+  }
 
   function updateCartButton() {
     if (cartBtn) {
@@ -59,6 +92,7 @@
     flavors.forEach(function(f) { f.classList.remove('active'); });
     if (flavors[index]) flavors[index].classList.add('active');
     updateCartButton();
+    updateProductImage();
   }
 
   tiers.forEach(function(t, i) {
