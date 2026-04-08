@@ -775,3 +775,18 @@ div[class*="shopify-section-group-header"] {
   justify-content: center !important;
   width: 100% !important;
 }
+
+/* Lifestyle images: full width on mobile, centered on desktop */
+@media (max-width: 639px) {
+  .photo-section img {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+@media (min-width: 640px) {
+  .photo-section img {
+    max-width: 500px !important;
+    border-radius: 12px !important;
+  }
+}
