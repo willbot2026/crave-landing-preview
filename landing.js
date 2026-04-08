@@ -103,9 +103,9 @@
         container.style.whiteSpace = 'normal';
         container.style.textAlign = 'center';
         track.style.display = 'flex';
-        track.style.flexWrap = 'wrap';
+        track.style.flexWrap = 'nowrap';
         track.style.justifyContent = 'center';
-        track.style.gap = '20px 48px';
+        track.style.gap = '48px';
         track.style.animation = 'none';
       }
     }
