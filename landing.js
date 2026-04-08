@@ -10,22 +10,18 @@
     {qty: 36, price: '110.99', perBar: '3.08'}
   ];
 
-  // Variant IDs: variantMap[flavorIndex][tierIndex]
-  // Flavors: 0=Cookie Dough, 1=Caramel Crisp, 2=Cookies & Cream, 3=Variety Pack
-  // Tiers: 0=12, 1=24, 2=36
   var variantMap = [
-    [42643466747994, 42921840869466, 42921884942426],  // Cookie Dough 12/24/36
-    [42643580551258, 42907593146458, 42921602941018],  // Caramel Crisp 12/24/36
-    [42643540115546, 42921899720794, 42921816588378],  // Cookies & Cream 12/24/36
-    [42937300058202, 43040536789082, 43040541278298]   // Variety Pack 12/24/36
+    [42643466747994, 42921840869466, 42921884942426],
+    [42643580551258, 42907593146458, 42921602941018],
+    [42643540115546, 42921899720794, 42921816588378],
+    [42937300058202, 43040536789082, 43040541278298]
   ];
 
-  // Price map matches the tiers but varies by flavor
   var priceMap = [
-    ['36.99', '69.99', '102.99'],  // Cookie Dough
-    ['36.99', '69.99', '102.99'],  // Caramel Crisp
-    ['36.99', '69.99', '102.99'],  // Cookies & Cream
-    ['39.99', '75.99', '110.99']   // Variety Pack
+    ['36.99', '69.99', '102.99'],
+    ['36.99', '69.99', '102.99'],
+    ['36.99', '69.99', '102.99'],
+    ['39.99', '75.99', '110.99']
   ];
 
   var selectedTier = 0;
@@ -73,8 +69,6 @@
     cartBtn.addEventListener('click', function(e) {
       e.preventDefault();
       var variantId = variantMap[selectedFlavor][selectedTier];
-      
-      // Disable button during request
       cartBtn.disabled = true;
       cartBtn.textContent = 'Adding...';
       cartBtn.style.opacity = '0.7';
@@ -97,7 +91,6 @@
             cartBtn.disabled = false;
             updateCartButton();
           }, 1500);
-          // Update cart count in header
           fetch('/cart.js').then(function(r){return r.json()}).then(function(cart){
             var countEl = document.querySelector('[data-cart-count], .cart-count, .cart-count-bubble span');
             if (countEl) countEl.textContent = cart.item_count;
@@ -118,7 +111,7 @@
     });
   }
 
-  // CTA buttons
+  // Hero + Reason CTAs: 36-count Variety Pack
   var ctaLinks = document.querySelectorAll('a.hero-cta, a.reason-cta');
   ctaLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
@@ -130,6 +123,19 @@
     });
   });
 
+  // "Apply Code & Order" button: 36-count Variety Pack
+  var urgencyCta = document.querySelector('.urgency-cta');
+  if (urgencyCta) {
+    urgencyCta.addEventListener('click', function(e) {
+      e.preventDefault();
+      selectTier(2);
+      selectFlavor(3);
+      var buySection = document.getElementById('buy');
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  }
+
+  // Bottom CTA ("Try Crave Risk-Free — $39.99"): 12-count Variety Pack
   var finalCta = document.querySelector('.final-cta a');
   if (finalCta) {
     finalCta.addEventListener('click', function(e) {
@@ -184,7 +190,6 @@
     window.addEventListener('resize', apply);
   }
 
-  // Trust badges marquee
   var allSections = document.querySelectorAll('.reason');
   allSections.forEach(function(s) {
     if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
@@ -193,7 +198,6 @@
     }
   });
 
-  // Product trust marquee
   var productTrust = document.querySelector('.product-trust');
   if (productTrust) makeMarquee(productTrust, productTrust, 12);
 })();
