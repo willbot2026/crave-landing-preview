@@ -41,7 +41,7 @@
     f.addEventListener('click', function() { selectFlavor(i); });
   });
 
-  // CTA buttons: select 36-count Variety Pack and scroll to #buy
+  // "Try Crave Risk-Free" buttons (hero + reason): 36-count Variety Pack
   var ctaLinks = document.querySelectorAll('a.hero-cta, a.reason-cta');
   ctaLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
@@ -54,4 +54,18 @@
       }
     });
   });
+
+  // Bottom yellow CTA ("Try Crave Risk-Free — $39.99"): 12-count Variety Pack
+  var finalCta = document.querySelector('.final-cta a');
+  if (finalCta) {
+    finalCta.addEventListener('click', function(e) {
+      e.preventDefault();
+      selectTier(0);    // 12-count
+      selectFlavor(3);  // Variety Pack
+      var buySection = document.getElementById('buy');
+      if (buySection) {
+        buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    });
+  }
 })();
