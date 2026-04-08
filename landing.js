@@ -90,31 +90,22 @@
         container.style.overflow = 'hidden';
         container.style.whiteSpace = 'nowrap';
         container.style.textAlign = 'left';
-        container.style.maxWidth = '';
         track.style.flexWrap = 'nowrap';
         track.style.gap = '32px';
         track.style.justifyContent = '';
         track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
       } else {
-        // Desktop: one line, spread across full width, spacing adjusts with window
+        // Desktop: single line, 48px gap, centered, no animation
         for (var j = 0; j < allSpans.length; j++) {
           allSpans[j].style.display = j < half ? '' : 'none';
         }
         container.style.overflow = 'visible';
         container.style.whiteSpace = 'nowrap';
         container.style.textAlign = 'center';
-        // Break out of the .reason max-width constraint
-        container.style.maxWidth = '100vw';
-        container.style.width = '100vw';
-        container.style.marginLeft = 'calc(-50vw + 50%)';
-        container.style.position = 'relative';
-        container.style.padding = '20px 40px';
-        container.style.boxSizing = 'border-box';
         track.style.display = 'flex';
         track.style.flexWrap = 'nowrap';
-        track.style.justifyContent = 'space-evenly';
-        track.style.gap = '0';
-        track.style.width = '100%';
+        track.style.justifyContent = 'center';
+        track.style.gap = '48px';
         track.style.animation = 'none';
       }
     }
