@@ -8,7 +8,8 @@
 .guarantee,
 .final-cta,
 .announcement-bar,
-.section-divider {
+.section-divider,
+.badge-marquee-section {
   width: 100vw !important;
   max-width: 100vw !important;
   margin-left: calc(-50vw + 50%) !important;
@@ -354,7 +355,8 @@ div[class*="shopify-section-group-header"] {
   }
 
   /* ─── DIVIDER ─── */
-  .section-divider {
+  .section-divider,
+.badge-marquee-section {
     width: 60px;
     height: 3px;
     background: #f5c518;
@@ -767,45 +769,3 @@ div[class*="shopify-section-group-header"] {
     .reason h2 { font-size: 30px; }
     .testimonial-grid { grid-template-columns: 1fr 1fr; }
   }
-
-/* ─── BADGE MARQUEE ─── */
-.badge-marquee {
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 20px 0;
-}
-.badge-marquee-track {
-  display: inline-flex;
-  gap: 32px;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #444;
-}
-.badge-marquee-track span {
-  white-space: nowrap;
-}
-/* Desktop: centered, no animation */
-@media (min-width: 640px) {
-  .badge-marquee {
-    text-align: center;
-  }
-  .badge-marquee-track {
-    justify-content: center;
-  }
-}
-/* Mobile: marquee scroll */
-@media (max-width: 639px) {
-  .badge-marquee-track {
-    animation: badgeScroll 12s linear infinite;
-  }
-  .badge-marquee-track .badge-dup {
-    display: inline-flex;
-    gap: 32px;
-    align-items: center;
-  }
-}
-@keyframes badgeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
