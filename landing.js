@@ -68,67 +68,50 @@
 
   function makeMarquee(container, track, speed) {
     speed = speed || 15;
-    container.style.overflow = 'hidden';
-    container.style.whiteSpace = 'nowrap';
-    container.style.padding = '20px 0';
+    container.style.padding = '20px 24px';
 
     track.style.display = 'inline-flex';
     track.style.alignItems = 'center';
-    track.style.flexWrap = 'nowrap';
-    track.style.gap = '32px';
 
     // Duplicate spans for seamless mobile loop
     var spans = track.querySelectorAll('span');
     spans.forEach(function(sp) {
       track.appendChild(sp.cloneNode(true));
     });
+    var totalSpans = track.querySelectorAll('span').length;
+    var half = totalSpans / 2;
 
     function apply() {
+      var allSpans = track.querySelectorAll('span');
+
       if (window.innerWidth < 640) {
         // Mobile: scrolling marquee
-        track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
-        track.style.justifyContent = '';
-        track.style.flexWrap = 'nowrap';
-        track.style.gap = '32px';
+        for (var i = 0; i < allSpans.length; i++) allSpans[i].style.display = '';
+        container.style.overflow = 'hidden';
         container.style.whiteSpace = 'nowrap';
         container.style.textAlign = 'left';
-      } else {
-        // Desktop: single line, evenly spaced, no animation
-        track.style.animation = 'none';
-        track.style.display = 'flex';
-        track.style.justifyContent = 'space-evenly';
         track.style.flexWrap = 'nowrap';
-        track.style.gap = '0';
-        container.style.whiteSpace = 'nowrap';
-        container.style.textAlign = 'center';
-        container.style.overflow = 'visible';
-
-        // Hide duplicate spans on desktop (only show originals)
-        var allSpans = track.querySelectorAll('span');
-        var half = allSpans.length / 2;
-        for (var i = 0; i < allSpans.length; i++) {
-          allSpans[i].style.display = i < half ? '' : 'none';
+        track.style.gap = '32px';
+        track.style.justifyContent = '';
+        track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
+      } else {
+        // Desktop: flex-wrap with generous gap, centered, no animation
+        for (var j = 0; j < allSpans.length; j++) {
+          allSpans[j].style.display = j < half ? '' : 'none';
         }
+        container.style.overflow = 'visible';
+        container.style.whiteSpace = 'normal';
+        container.style.textAlign = 'center';
+        track.style.display = 'flex';
+        track.style.flexWrap = 'wrap';
+        track.style.justifyContent = 'center';
+        track.style.gap = '20px 48px';
+        track.style.animation = 'none';
       }
     }
 
-    // On mobile, make sure all spans are visible
-    function showAllSpans() {
-      var allSpans = track.querySelectorAll('span');
-      for (var i = 0; i < allSpans.length; i++) {
-        allSpans[i].style.display = '';
-      }
-    }
-
-    function applyFull() {
-      if (window.innerWidth < 640) {
-        showAllSpans();
-      }
-      apply();
-    }
-
-    applyFull();
-    window.addEventListener('resize', applyFull);
+    apply();
+    window.addEventListener('resize', apply);
   }
 
   // ─── TRUST BADGES MARQUEE ───
