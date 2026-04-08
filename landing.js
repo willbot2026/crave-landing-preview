@@ -29,48 +29,39 @@
     if (flavors[index]) flavors[index].classList.add('active');
   }
 
-  // Make tiers clickable
   tiers.forEach(function(t, i) {
     t.style.cursor = 'pointer';
     t.addEventListener('click', function() { selectTier(i); });
   });
 
-  // Make flavors clickable
   flavors.forEach(function(f, i) {
     f.style.cursor = 'pointer';
     f.addEventListener('click', function() { selectFlavor(i); });
   });
 
-  // "Try Crave Risk-Free" buttons (hero + reason): 36-count Variety Pack
   var ctaLinks = document.querySelectorAll('a.hero-cta, a.reason-cta');
   ctaLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      selectTier(2);    // 36-count
-      selectFlavor(3);  // Variety Pack
+      selectTier(2);
+      selectFlavor(3);
       var buySection = document.getElementById('buy');
-      if (buySection) {
-        buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
   });
 
-  // Bottom yellow CTA ("Try Crave Risk-Free — $39.99"): 12-count Variety Pack
   var finalCta = document.querySelector('.final-cta a');
   if (finalCta) {
     finalCta.addEventListener('click', function(e) {
       e.preventDefault();
-      selectTier(0);    // 12-count
-      selectFlavor(3);  // Variety Pack
+      selectTier(0);
+      selectFlavor(3);
       var buySection = document.getElementById('buy');
-      if (buySection) {
-        buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
   }
 
-  // ─── TRUST BADGES MARQUEE (mobile only) ───
-  // Find the trust badges section by looking for "Dessert-Level Taste" text
+  // ─── TRUST BADGES MARQUEE ───
   var allSections = document.querySelectorAll('.reason');
   var badgeSection = null;
   allSections.forEach(function(s) {
@@ -82,36 +73,46 @@
   if (badgeSection) {
     var badgeDiv = badgeSection.querySelector('div');
     if (badgeDiv) {
-      // Style the container for marquee
+      // Style container
       badgeSection.style.overflow = 'hidden';
       badgeSection.style.whiteSpace = 'nowrap';
       badgeSection.style.padding = '20px 0';
-      
+
       badgeDiv.style.display = 'inline-flex';
       badgeDiv.style.gap = '32px';
       badgeDiv.style.alignItems = 'center';
       badgeDiv.style.flexWrap = 'nowrap';
 
-      // Duplicate the badges for seamless loop
+      // Duplicate spans for seamless loop
       var spans = badgeDiv.querySelectorAll('span');
-      var separator = '\u00a0\u00a0\u00b7\u00b7\u00b7\u00a0\u00a0';
       spans.forEach(function(sp) {
-        var clone = sp.cloneNode(true);
-        badgeDiv.appendChild(clone);
+        badgeDiv.appendChild(sp.cloneNode(true));
       });
 
-      // Add CSS animation for mobile only
+      // Inject keyframes
       var style = document.createElement('style');
-      style.textContent = '' +
-        '@keyframes badgeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }' +
-        '@media (max-width: 639px) {' +
-        '  #trust-badges div { animation: badgeScroll 15s linear infinite !important; }' +
-        '}' +
-        '@media (min-width: 640px) {' +
-        '  #trust-badges { text-align: center !important; }' +
-        '  #trust-badges div { justify-content: center !important; flex-wrap: wrap !important; white-space: normal !important; }' +
-        '}';
+      style.textContent = '@keyframes badgeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
       document.head.appendChild(style);
+
+      // Apply animation based on viewport
+      function applyMarquee() {
+        if (window.innerWidth < 640) {
+          badgeDiv.style.animation = 'badgeScroll 15s linear infinite';
+          badgeDiv.style.justifyContent = '';
+          badgeDiv.style.flexWrap = 'nowrap';
+          badgeSection.style.whiteSpace = 'nowrap';
+          badgeSection.style.textAlign = 'left';
+        } else {
+          badgeDiv.style.animation = 'none';
+          badgeDiv.style.justifyContent = 'center';
+          badgeDiv.style.flexWrap = 'wrap';
+          badgeSection.style.whiteSpace = 'normal';
+          badgeSection.style.textAlign = 'center';
+        }
+      }
+
+      applyMarquee();
+      window.addEventListener('resize', applyMarquee);
     }
   }
 })();
