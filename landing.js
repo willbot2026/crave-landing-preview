@@ -38,7 +38,7 @@
   var flavorSelector = productSection ? productSection.querySelector('.flavor-selector') : null;
   var productImg = null;
   if (flavorSelector) {
-    var imgContainer = document.createElement('div');
+    var imgContainer = document.createElement('div'); imgContainer.className = 'product-img-container';
     imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;overflow:hidden;';
     productImg = document.createElement('img');
     productImg.src = boxImages[0]; productImg.style.maxWidth = '272px'; productImg.onload = function() { if (!imgContainer.dataset.varietyHeight) { var h = imgContainer.offsetHeight; imgContainer.dataset.varietyHeight = h; imgContainer.style.height = h + 'px'; } };
