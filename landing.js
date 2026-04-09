@@ -41,7 +41,7 @@
     var imgContainer = document.createElement('div');
     imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;';
     productImg = document.createElement('img');
-    productImg.src = boxImages[0]; productImg.style.maxWidth = '320px';
+    productImg.src = boxImages[0]; productImg.style.maxWidth = '272px';
     productImg.alt = 'Product box';
     productImg.style.cssText = 'width:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;object-fit:contain;';
     imgContainer.appendChild(productImg);
@@ -52,7 +52,7 @@
     if (productImg) {
       productImg.style.opacity = '0';
       setTimeout(function() {
-        productImg.src = boxImages[selectedFlavor]; productImg.style.maxWidth = (selectedFlavor === 0) ? '320px' : '350px';
+        productImg.src = boxImages[selectedFlavor]; productImg.style.maxWidth = (selectedFlavor === 0) ? '272px' : '350px';
         productImg.style.opacity = '1';
       }, 150);
     }
