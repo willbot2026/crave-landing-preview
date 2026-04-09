@@ -39,11 +39,11 @@
   var productImg = null;
   if (flavorSelector) {
     var imgContainer = document.createElement('div');
-    imgContainer.style.cssText = 'text-align:center;margin-bottom:24px;display:flex;justify-content:center;';
+    imgContainer.style.cssText = 'text-align:center;margin-bottom:24px;display:flex;justify-content:center;align-items:center;min-height:350px;';
     productImg = document.createElement('img');
     productImg.src = boxImages[0];
     productImg.alt = 'Product box';
-    productImg.style.cssText = 'max-width:350px;width:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;';
+    productImg.style.cssText = 'max-width:350px;width:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;object-fit:contain;';
     imgContainer.appendChild(productImg);
     flavorSelector.parentNode.insertBefore(imgContainer, flavorSelector);
   }
