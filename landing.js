@@ -9,25 +9,25 @@
   var cartBtn = document.querySelector('.add-to-cart');
 
   var variantMap = [
+    [42937300058202, 43040536789082, 43040541278298],
     [42643466747994, 42921840869466, 42921884942426],
     [42643580551258, 42907593146458, 42921602941018],
-    [42643540115546, 42921899720794, 42921816588378],
-    [42937300058202, 43040536789082, 43040541278298]
+    [42643540115546, 42921899720794, 42921816588378]
   ];
 
-  // Box images per flavor: Cookie Dough, Caramel Crisp, Cookies & Cream, Variety Pack
+  // Box images per flavor: Variety Pack, Cookie Dough, Caramel Crisp, Cookies & Cream
   var boxImages = [
-    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-cookie-dough.jpg?v=1775671572',
-    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-caramel-crisp.jpg?v=1775671574',
-    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-cookies-cream.jpg?v=1775671575',
-    'https://cdn.shopify.com/s/files/1/0658/1429/8714/files/box-variety-pack.jpg?v=1775671577'
+    'https://willbot2026.github.io/crave-landing-preview/images/variety-pack.png',
+    'https://willbot2026.github.io/crave-landing-preview/images/cookie-dough.png',
+    'https://willbot2026.github.io/crave-landing-preview/images/caramel-crisp.png',
+    'https://willbot2026.github.io/crave-landing-preview/images/cookies-cream.png'
   ];
 
   var priceMap = [
+    ['39.99', '75.99', '110.99'],
     ['36.99', '69.99', '102.99'],
     ['36.99', '69.99', '102.99'],
-    ['36.99', '69.99', '102.99'],
-    ['39.99', '75.99', '110.99']
+    ['36.99', '69.99', '102.99']
   ];
 
   var selectedTier = 0;
@@ -43,7 +43,7 @@
     productImg = document.createElement('img');
     productImg.src = boxImages[0];
     productImg.alt = 'Product box';
-    productImg.style.cssText = 'max-width:280px;width:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;';
+    productImg.style.cssText = 'max-width:350px;width:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;';
     imgContainer.appendChild(productImg);
     flavorSelector.parentNode.insertBefore(imgContainer, flavorSelector);
   }
