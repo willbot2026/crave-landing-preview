@@ -39,7 +39,7 @@
   var productImg = null;
   if (flavorSelector) {
     var imgContainer = document.createElement('div');
-    imgContainer.style.cssText = 'text-align:center;margin-bottom:12px;display:flex;justify-content:center;align-items:center;';
+    imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;';
     productImg = document.createElement('img');
     productImg.src = boxImages[0]; productImg.style.maxWidth = '320px';
     productImg.alt = 'Product box';
