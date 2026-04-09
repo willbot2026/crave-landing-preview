@@ -39,9 +39,9 @@
   var productImg = null;
   if (flavorSelector) {
     var imgContainer = document.createElement('div');
-    imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;';
+    imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;overflow:hidden;';
     productImg = document.createElement('img');
-    productImg.src = boxImages[0]; productImg.style.maxWidth = '272px'; productImg.onload = function() { if (!imgContainer.dataset.varietyHeight) { imgContainer.dataset.varietyHeight = imgContainer.offsetHeight; } };
+    productImg.src = boxImages[0]; productImg.style.maxWidth = '272px'; productImg.onload = function() { if (!imgContainer.dataset.varietyHeight) { var h = imgContainer.offsetHeight; imgContainer.dataset.varietyHeight = h; imgContainer.style.height = h + 'px'; } };
     productImg.alt = 'Product box';
     productImg.style.cssText = 'width:100%;max-height:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;object-fit:contain;';
     imgContainer.appendChild(productImg);
@@ -52,7 +52,7 @@
     if (productImg) {
       productImg.style.opacity = '0';
       setTimeout(function() {
-        productImg.src = boxImages[selectedFlavor]; productImg.style.maxWidth = (selectedFlavor === 0) ? '272px' : '350px'; imgContainer.style.height = (selectedFlavor === 0) ? 'auto' : imgContainer.dataset.varietyHeight + 'px';
+        productImg.src = boxImages[selectedFlavor]; productImg.style.maxWidth = (selectedFlavor === 0) ? '272px' : '350px'; var lockedH = imgContainer.dataset.varietyHeight; if (lockedH) { imgContainer.style.height = lockedH + 'px'; } productImg.style.maxHeight = (selectedFlavor === 0) ? 'none' : (lockedH ? lockedH + 'px' : 'none');
         productImg.style.opacity = '1';
       }, 150);
     }
