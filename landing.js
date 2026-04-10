@@ -6,7 +6,13 @@
 
   // ─── SWAP HERO IMAGE ───
   var heroImg = document.querySelector('.hero img');
-  if (heroImg) heroImg.src = 'https://willbot2026.github.io/crave-landing-preview/images/hero-v2.png';
+  if (heroImg) {
+    heroImg.src = 'https://willbot2026.github.io/crave-landing-preview/images/hero-v3.png';
+    heroImg.parentElement.style.maxHeight = '320px';
+    heroImg.parentElement.style.overflow = 'hidden';
+    heroImg.style.maxHeight = '320px';
+    heroImg.style.objectFit = 'contain';
+  }
 
   var tiers = document.querySelectorAll('.tier-option');
   var flavors = document.querySelectorAll('.flavor-chip');
