@@ -4,6 +4,10 @@
   // Always apply the discount code on page load (fetch sets the cookie)
   fetch('/discount/NIGHTFIX', {method: 'GET', credentials: 'same-origin', redirect: 'follow'}).catch(function(){});
 
+  // ─── SWAP HERO IMAGE ───
+  var heroImg = document.querySelector('.hero img');
+  if (heroImg) heroImg.src = 'https://willbot2026.github.io/crave-landing-preview/images/hero-v2.png';
+
   var tiers = document.querySelectorAll('.tier-option');
   var flavors = document.querySelectorAll('.flavor-chip');
   var cartBtn = document.querySelector('.add-to-cart');
