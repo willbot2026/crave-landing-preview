@@ -570,8 +570,8 @@ div[class*="shopify-section-group-header"] {
     position: relative;
   }
   .tier-option.popular {
-    border-color: #2d1b69;
-    background: #f8f5ff;
+    border-color: #e0e0e0;
+    background: transparent;
   }
   .tier-option.popular::before {
     content: 'MOST POPULAR';
