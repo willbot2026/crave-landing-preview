@@ -553,19 +553,20 @@ div[class*="shopify-section-group-header"] {
   /* Tier selector */
   .tier-selector {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     justify-content: center;
     margin-bottom: 32px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .tier-option {
     border: 2px solid #e0e0e0;
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 12px 14px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
-    min-width: 110px;
+    min-width: 0;
+    flex: 1 1 0;
     position: relative;
   }
   .tier-option.popular {
@@ -789,4 +790,20 @@ div[class*="shopify-section-group-header"] {
     max-width: 500px !important;
     border-radius: 12px !important;
   }
+}
+
+/* Tier selector: compact on small mobile */
+@media (max-width: 480px) {
+  .tier-selector { gap: 6px; }
+  .tier-option { padding: 10px 6px; }
+  .tier-qty { font-size: 15px; }
+  .tier-price { font-size: 12px; }
+  .tier-save { font-size: 10px; }
+  .tier-option.popular::before { font-size: 8px; padding: 2px 6px; }
+}
+@media (max-width: 360px) {
+  .tier-selector { gap: 4px; }
+  .tier-option { padding: 8px 4px; }
+  .tier-qty { font-size: 13px; }
+  .tier-price { font-size: 11px; }
 }
