@@ -14,6 +14,12 @@
     heroImg.style.objectFit = 'contain';
   }
 
+  // ─── SWAP GIF BG ON DESKTOP ───
+  var gifBgImg = document.querySelector('.gif-bg-img');
+  if (gifBgImg && window.innerWidth >= 641) {
+    gifBgImg.src = 'https://willbot2026.github.io/crave-landing-preview/images/gif-bg-desktop.jpg';
+  }
+
   var tiers = document.querySelectorAll('.tier-option');
   var flavors = document.querySelectorAll('.flavor-chip');
   var cartBtn = document.querySelector('.add-to-cart');
