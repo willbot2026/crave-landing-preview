@@ -811,11 +811,11 @@ div[class*="shopify-section-group-header"] {
 /* GIF background: 40% smaller on desktop, fixed size */
 @media (min-width: 641px) {
   .gif-bg-img {
-    width: 658px !important;
-    max-width: 658px !important;
-    height: 823px !important;
+    width: 631px !important;
+    max-width: 631px !important;
+    height: 790px !important;
     object-fit: cover !important;
     object-position: center bottom !important;
-    max-height: 700px !important;
+    max-height: 672px !important;
   }
 }
