@@ -814,5 +814,8 @@ div[class*="shopify-section-group-header"] {
     width: 658px !important;
     max-width: 658px !important;
     height: 823px !important;
+    object-fit: cover !important;
+    object-position: center bottom !important;
+    max-height: 700px !important;
   }
 }
