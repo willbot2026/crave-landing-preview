@@ -272,8 +272,8 @@
       e.preventDefault();
       selectTier(2);
       selectFlavor(0);
-      var buySection = document.querySelector('.add-to-cart');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
+      var buySection = document.querySelector('.product-section');
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
   });
 
@@ -283,8 +283,8 @@
       e.preventDefault();
       selectTier(2);
       selectFlavor(0);
-      var buySection = document.querySelector('.add-to-cart');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
+      var buySection = document.querySelector('.product-section');
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
   }
 
@@ -294,8 +294,8 @@
       e.preventDefault();
       selectTier(2);
       selectFlavor(0);
-      var buySection = document.querySelector('.add-to-cart');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
+      var buySection = document.querySelector('.product-section');
+      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
     });
   }
 
