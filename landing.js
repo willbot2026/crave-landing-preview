@@ -86,6 +86,10 @@
     updateProductImage();
   }
 
+  // Move "Most Popular" badge to 36 Bars (index 2)
+  tiers.forEach(function(t) { t.classList.remove('popular'); });
+  if (tiers[2]) tiers[2].classList.add('popular');
+
   tiers.forEach(function(t, i) {
     t.style.cursor = 'pointer';
     t.addEventListener('click', function() { selectTier(i); });
