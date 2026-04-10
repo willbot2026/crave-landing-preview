@@ -251,7 +251,7 @@
     link.addEventListener('click', function(e) {
       e.preventDefault();
       selectTier(2);
-      selectFlavor(3);
+      selectFlavor(0);
       var buySection = document.querySelector('.add-to-cart');
       if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
     });
@@ -262,7 +262,7 @@
     urgencyCta.addEventListener('click', function(e) {
       e.preventDefault();
       selectTier(2);
-      selectFlavor(3);
+      selectFlavor(0);
       var buySection = document.querySelector('.add-to-cart');
       if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
     });
@@ -272,8 +272,8 @@
   if (finalCta) {
     finalCta.addEventListener('click', function(e) {
       e.preventDefault();
-      selectTier(0);
-      selectFlavor(3);
+      selectTier(2);
+      selectFlavor(0);
       var buySection = document.querySelector('.add-to-cart');
       if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'center'});
     });
