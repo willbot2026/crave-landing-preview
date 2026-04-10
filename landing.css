@@ -811,8 +811,8 @@ div[class*="shopify-section-group-header"] {
 /* GIF background: 40% smaller on desktop, fixed size */
 @media (min-width: 641px) {
   .gif-bg-img {
-    width: 508px !important;
-    max-width: 508px !important;
-    height: 633px !important;
+    width: 648px !important;
+    max-width: 648px !important;
+    height: 810px !important;
   }
 }
