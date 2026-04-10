@@ -807,3 +807,12 @@ div[class*="shopify-section-group-header"] {
   .tier-qty { font-size: 13px; }
   .tier-price { font-size: 11px; }
 }
+
+/* GIF background: 40% smaller on desktop, fixed size */
+@media (min-width: 641px) {
+  .gif-bg-img {
+    width: 648px !important;
+    max-width: 648px !important;
+    height: 810px !important;
+  }
+}
