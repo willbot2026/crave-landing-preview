@@ -301,8 +301,9 @@
   function makeMarquee(container, track, speed) {
     speed = speed || 15;
     container.style.padding = '20px 24px';
-    track.style.display = 'inline-flex';
+    track.style.display = 'flex';
     track.style.alignItems = 'center';
+    track.style.width = 'max-content';
 
     var spans = track.querySelectorAll('span');
     spans.forEach(function(sp) { track.appendChild(sp.cloneNode(true)); });
@@ -331,6 +332,7 @@
         track.style.justifyContent = 'center';
         track.style.gap = '48px';
         track.style.animation = 'none';
+        track.style.width = 'auto';
       }
     }
     apply();
