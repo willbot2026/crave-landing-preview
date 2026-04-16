@@ -27,11 +27,15 @@
 
   // Box images per flavor: Variety Pack, Cookie Dough, Caramel Crisp, Cookies & Cream
   var boxImages = [
-    'https://willbot2026.github.io/crave-landing-preview/images/variety-pack.png',
-    'https://willbot2026.github.io/crave-landing-preview/images/cookie-dough.png',
-    'https://willbot2026.github.io/crave-landing-preview/images/caramel-crisp.png',
-    'https://willbot2026.github.io/crave-landing-preview/images/cookies-cream.png'
+    'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/3-opened-bars-v2.png',
+    'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/cookie-dough-box.png',
+    'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/caramel-crisp-box.png',
+    'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/cookies-cream-box.png'
   ];
+  // Per-flavor max-width (2026-04-16 edits 1, 8): Variety Pack = 320 desktop / 272 mobile;
+  // other 3 flavors = 350 (both).
+  var boxMaxDesktop = [320, 350, 350, 350];
+  var boxMaxMobile  = [272, 350, 350, 350];
 
   var priceMap = [
     ['39.99', '75.99', '110.99'],
@@ -65,10 +69,16 @@
 
   function updateProductImage() {
     if (productImg) {
+      // Preserve scroll position — don't allow any layout shift to push the page up.
+      var scrollY = window.scrollY || window.pageYOffset;
       productImg.style.opacity = '0';
       setTimeout(function() {
-        productImg.src = boxImages[selectedFlavor]; productImg.style.maxWidth = '350px';
+        productImg.src = boxImages[selectedFlavor];
+        var isMobile = window.innerWidth < 640;
+        var mw = (isMobile ? boxMaxMobile : boxMaxDesktop)[selectedFlavor];
+        productImg.style.maxWidth = mw + 'px';
         productImg.style.opacity = '1';
+        window.scrollTo({ top: scrollY, behavior: 'instant' });
       }, 150);
     }
   }
@@ -293,69 +303,38 @@
   // Bottom yellow "$39.99" button in .final-cta: VP 12-count (data-variant-tier="0" on element)
   wireCta('.final-cta a', 0);
 
-  // ─── MARQUEE HELPER ───
+  // ─── MARQUEE HELPER (2026-04-16: 68s infinite, desktop + mobile) ───
   var mstyle = document.createElement('style');
-  mstyle.textContent = '@keyframes badgeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
+  mstyle.textContent = '@keyframes badgeScroll68{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
   document.head.appendChild(mstyle);
 
   function makeMarquee(container, track, speed) {
-    speed = speed || 15;
-    container.style.padding = '20px 24px';
+    speed = speed || 68;
     track.style.display = 'flex';
     track.style.alignItems = 'center';
     track.style.width = 'max-content';
+    track.style.flexWrap = 'nowrap';
+    track.style.whiteSpace = 'nowrap';
+    track.style.gap = '48px';
+    container.style.overflow = 'hidden';
+    container.style.whiteSpace = 'nowrap';
 
-    var spans = track.querySelectorAll('span');
-    spans.forEach(function(sp) { track.appendChild(sp.cloneNode(true)); });
-    var totalSpans = track.querySelectorAll('span').length;
-    var half = totalSpans / 2;
-
-    function apply() {
-      var allSpans = track.querySelectorAll('span');
-      if (window.innerWidth < 640) {
-        for (var i = 0; i < allSpans.length; i++) allSpans[i].style.display = '';
-        container.style.overflow = 'hidden';
-        container.style.whiteSpace = 'nowrap';
-        container.style.textAlign = 'left';
-        track.style.flexWrap = 'nowrap';
-        track.style.gap = '32px';
-        track.style.justifyContent = '';
-        track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
-      } else {
-        // Desktop: one copy visible, centered, wraps when narrow.
-        for (var j = 0; j < allSpans.length; j++) allSpans[j].style.display = j < half ? '' : 'none';
-        container.style.overflow = 'visible';
-        container.style.whiteSpace = 'normal';
-        container.style.textAlign = 'center';
-        track.style.display = 'flex';
-        track.style.flexWrap = 'wrap';
-        track.style.justifyContent = 'center';
-        track.style.gap = '48px';
-        track.style.animation = 'none';
-        track.style.width = 'auto';
-      }
+    // Duplicate the content once so the -50% translate loops seamlessly.
+    if (!track.getAttribute('data-marquee-inited')) {
+      var spans = Array.prototype.slice.call(track.querySelectorAll(':scope > span'));
+      spans.forEach(function(sp) { track.appendChild(sp.cloneNode(true)); });
+      track.setAttribute('data-marquee-inited', '1');
     }
-    apply();
-    window.addEventListener('resize', apply);
+
+    track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll68';
   }
 
-  // Row A: explicit .badge-marquee-section wrapper with .badge-marquee-track inside
-  var rowA = document.querySelector('.badge-marquee-section');
-  if (rowA) {
-    var trackA = rowA.querySelector('.badge-marquee-track') || rowA.querySelector('div');
-    if (trackA) makeMarquee(rowA, trackA, 18);
-  } else {
-    // Fallback to legacy text-search targeting in case wrapper is missing
-    var allSections = document.querySelectorAll('.reason');
-    allSections.forEach(function(s) {
-      if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
-        var div = s.querySelector('div');
-        if (div) makeMarquee(s, div, 18);
-      }
-    });
-  }
+  // Row A and Row C: ALL .badge-marquee-section wrappers
+  var marqueeRows = document.querySelectorAll('.badge-marquee-section');
+  marqueeRows.forEach(function(section) {
+    var trk = section.querySelector('.badge-marquee-track') || section.querySelector('div');
+    if (trk) makeMarquee(section, trk, 68);
+  });
 
-  // Row B: .product-trust inside buy box
-  var productTrust = document.querySelector('.product-trust');
-  if (productTrust) makeMarquee(productTrust, productTrust, 14);
+  // .product-trust kept as plain wrapping badges (per 2026-04-16 edit 14) — no marquee.
 })();
