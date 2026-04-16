@@ -321,12 +321,13 @@
         track.style.justifyContent = '';
         track.style.animation = speed + 's linear 0s infinite normal none running badgeScroll';
       } else {
+        // Desktop: one copy visible, centered, wraps when narrow.
         for (var j = 0; j < allSpans.length; j++) allSpans[j].style.display = j < half ? '' : 'none';
         container.style.overflow = 'visible';
-        container.style.whiteSpace = 'nowrap';
+        container.style.whiteSpace = 'normal';
         container.style.textAlign = 'center';
         track.style.display = 'flex';
-        track.style.flexWrap = 'nowrap';
+        track.style.flexWrap = 'wrap';
         track.style.justifyContent = 'center';
         track.style.gap = '48px';
         track.style.animation = 'none';
