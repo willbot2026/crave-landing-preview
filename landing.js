@@ -4,15 +4,9 @@
   // Always apply the discount code on page load (fetch sets the cookie)
   fetch('/discount/NIGHTFIX', {method: 'GET', credentials: 'same-origin', redirect: 'follow'}).catch(function(){});
 
-  // ─── SWAP HERO IMAGE ───
-  var heroImg = document.querySelector('.hero img');
-  if (heroImg) {
-    heroImg.src = 'https://willbot2026.github.io/crave-landing-preview/images/hero-v3.png';
-    heroImg.parentElement.style.maxHeight = '320px';
-    heroImg.parentElement.style.overflow = 'hidden';
-    heroImg.style.maxHeight = '320px';
-    heroImg.style.objectFit = 'contain';
-  }
+  // ─── HERO IMAGE (already in body_html; leave src alone) ───
+  // Body now has <img src="...hero-variety-pack.jpg"> directly.
+  // No JS swap required — keeps image visible even if JS fails.
 
   // ─── SWAP GIF BG ON DESKTOP ───
   var gifBgImg = document.querySelector('.gif-bg-img');
@@ -49,19 +43,24 @@
   var selectedTier = 0;
   var selectedFlavor = 0;
 
-  // ─── CREATE PRODUCT IMAGE IN BUY BOX ───
-  var productSection = document.querySelector('.product-section');
-  var flavorSelector = productSection ? productSection.querySelector('.flavor-selector') : null;
-  var productImg = null;
-  if (flavorSelector) {
-    var imgContainer = document.createElement('div'); imgContainer.className = 'product-img-container';
-    imgContainer.style.cssText = 'text-align:center;margin-bottom:2px;display:flex;justify-content:center;align-items:center;overflow:hidden;';
-    productImg = document.createElement('img');
-    productImg.src = boxImages[0]; productImg.style.maxWidth = '350px';
-    productImg.alt = 'Product box';
-    productImg.style.cssText = 'width:100%;max-height:100%;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;object-fit:contain;';
-    imgContainer.appendChild(productImg);
-    flavorSelector.parentNode.insertBefore(imgContainer, flavorSelector);
+  // ─── PRODUCT IMAGE IN BUY BOX ───
+  // Body now has <img class="product-box-image"> already. Prefer that; fallback to creating one.
+  var productImg = document.querySelector('.product-section .product-box-image');
+  if (!productImg) {
+    var productSection = document.querySelector('.product-section');
+    var flavorSelector = productSection ? productSection.querySelector('.flavor-selector') : null;
+    if (flavorSelector) {
+      var imgContainer = document.createElement('div');
+      imgContainer.className = 'product-image-wrap';
+      imgContainer.style.cssText = 'text-align:center;margin:8px auto 16px;display:flex;justify-content:center;align-items:center;max-width:380px;';
+      productImg = document.createElement('img');
+      productImg.className = 'product-box-image';
+      productImg.src = boxImages[0];
+      productImg.alt = 'Product box';
+      productImg.style.cssText = 'width:100%;max-width:350px;height:auto;border-radius:12px;transition:opacity 0.3s;display:block;margin:0 auto;object-fit:contain;';
+      imgContainer.appendChild(productImg);
+      flavorSelector.parentNode.insertBefore(imgContainer, flavorSelector);
+    }
   }
 
   function updateProductImage() {
@@ -266,38 +265,33 @@
   }
 
   // ─── CTA BUTTONS ───
-  var ctaLinks = document.querySelectorAll('a.hero-cta, a.reason-cta');
-  ctaLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      selectTier(2);
-      selectFlavor(0);
-      var buySection = document.querySelector('.product-section');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
-    });
-  });
-
-  var urgencyCta = document.querySelector('.urgency-cta');
-  if (urgencyCta) {
-    urgencyCta.addEventListener('click', function(e) {
-      e.preventDefault();
-      selectTier(2);
-      selectFlavor(0);
-      var buySection = document.querySelector('.product-section');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
+  // Default: Variety Pack (flavor=0) + 36-count tier (tier=2), scroll the
+  // Add-To-Cart button into viewport center (not the section top).
+  // Individual buttons may override via data-variant-tier="0|1|2".
+  function scrollToAddToCart() {
+    var target = document.querySelector('.add-to-cart') || document.querySelector('.product-section');
+    if (target) target.scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+  function wireCta(selector, defaultTier) {
+    var nodes = document.querySelectorAll(selector);
+    nodes.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var tier = link.getAttribute('data-variant-tier');
+        tier = tier !== null ? parseInt(tier, 10) : defaultTier;
+        if (isNaN(tier)) tier = defaultTier;
+        selectTier(tier);
+        selectFlavor(0); // Variety Pack
+        scrollToAddToCart();
+      });
     });
   }
-
-  var finalCta = document.querySelector('.final-cta a');
-  if (finalCta) {
-    finalCta.addEventListener('click', function(e) {
-      e.preventDefault();
-      selectTier(2);
-      selectFlavor(0);
-      var buySection = document.querySelector('.product-section');
-      if (buySection) buySection.scrollIntoView({behavior: 'smooth', block: 'start'});
-    });
-  }
+  // "Try Crave Risk-Free" CTAs: default VP 36-count
+  wireCta('a.hero-cta, a.reason-cta', 2);
+  // "Apply Code & Order": VP 36-count (data-variant-tier="2" on element)
+  wireCta('a.urgency-cta', 2);
+  // Bottom yellow "$39.99" button in .final-cta: VP 12-count (data-variant-tier="0" on element)
+  wireCta('.final-cta a', 0);
 
   // ─── MARQUEE HELPER ───
   var mstyle = document.createElement('style');
@@ -342,14 +336,23 @@
     window.addEventListener('resize', apply);
   }
 
-  var allSections = document.querySelectorAll('.reason');
-  allSections.forEach(function(s) {
-    if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
-      var div = s.querySelector('div');
-      if (div) makeMarquee(s, div, 15);
-    }
-  });
+  // Row A: explicit .badge-marquee-section wrapper with .badge-marquee-track inside
+  var rowA = document.querySelector('.badge-marquee-section');
+  if (rowA) {
+    var trackA = rowA.querySelector('.badge-marquee-track') || rowA.querySelector('div');
+    if (trackA) makeMarquee(rowA, trackA, 18);
+  } else {
+    // Fallback to legacy text-search targeting in case wrapper is missing
+    var allSections = document.querySelectorAll('.reason');
+    allSections.forEach(function(s) {
+      if (s.textContent.indexOf('Dessert-Level') > -1 && s.textContent.indexOf('19-20g Protein') > -1) {
+        var div = s.querySelector('div');
+        if (div) makeMarquee(s, div, 18);
+      }
+    });
+  }
 
+  // Row B: .product-trust inside buy box
   var productTrust = document.querySelector('.product-trust');
-  if (productTrust) makeMarquee(productTrust, productTrust, 12);
+  if (productTrust) makeMarquee(productTrust, productTrust, 14);
 })();
