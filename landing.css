@@ -1079,3 +1079,7 @@ html, body { overflow-x: hidden !important; }
   white-space: nowrap;
   width: max-content;
 }
+
+/* Apr 17 Pauline: desktop-only line break for hero subtitle */
+.hero .desktop-break { display: none; }
+@media (min-width: 640px) { .hero .desktop-break { display: inline; } }

@@ -412,10 +412,16 @@
   }
 
   // Row A and Row C: ALL .badge-marquee-section wrappers
+  // Row C (data-marquee="C") runs 15% faster on desktop only (Pauline Apr 17).
+  var isDesktop = window.innerWidth >= 640;
   var marqueeRows = document.querySelectorAll('.badge-marquee-section');
   marqueeRows.forEach(function(section) {
     var trk = section.querySelector('.badge-marquee-track') || section.querySelector('div');
-    if (trk) makeMarquee(section, trk, 68);
+    if (!trk) return;
+    var row = section.getAttribute('data-marquee');
+    var speed = 68;
+    if (row === 'C' && isDesktop) speed = 58; // 68 / 1.172 ≈ 58, ~15% faster
+    makeMarquee(section, trk, speed);
   });
 
   // .product-trust kept as plain wrapping badges (per 2026-04-16 edit 14) — no marquee.
