@@ -1016,3 +1016,24 @@ html, body { overflow-x: hidden !important; }
   .flavor-arrow-prev { left: 2px; }
   .flavor-arrow-next { right: 2px; }
 }
+
+/* ═══ Apr 17 Pauline: hero crossfade slideshow ═══ */
+.hero-product-image-wrap { position: relative; }
+.hero-product-image-wrap img.hero-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0 auto !important;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+}
+.hero-product-image-wrap img.hero-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* The first image in the DOM is NOT absolute — it preserves layout height.
+   Subsequent .hero-slide images overlay it with absolute positioning. */
+.hero-product-image-wrap > img:first-of-type.hero-slide {
+  position: relative;
+  inset: auto;
+}

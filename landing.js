@@ -8,6 +8,22 @@
   // Body now has <img src="...hero-variety-pack.jpg"> directly.
   // No JS swap required — keeps image visible even if JS fails.
 
+  // ─── HERO CROSSFADE SLIDESHOW (Apr 17) ───
+  // If the .hero-product-image-wrap has >1 slide img, crossfade every 4s.
+  (function heroCrossfade(){
+    var wrap = document.querySelector('.hero-product-image-wrap');
+    if (!wrap) return;
+    var slides = wrap.querySelectorAll('img.hero-slide');
+    if (slides.length < 2) return;
+    var i = 0;
+    slides.forEach(function(s, idx){ s.classList.toggle('active', idx === 0); });
+    setInterval(function(){
+      slides[i].classList.remove('active');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('active');
+    }, 4000);
+  })();
+
   // ─── SWAP GIF BG ON DESKTOP ───
   var gifBgImg = document.querySelector('.gif-bg-img');
   if (gifBgImg && window.innerWidth >= 641) {
