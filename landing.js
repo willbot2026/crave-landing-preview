@@ -32,6 +32,43 @@
     'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/caramel-crisp-box.png',
     'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/cookies-cream-box.png'
   ];
+
+  // === Apr 17 Pauline: per-flavor carousel ===
+  // Index 0 for each flavor = the existing boxImages[flavor] (the "default" image,
+  // unchanged). Indices 1..N are the listing images Pauline approved in the brief.
+  var SLIDE_BASE = 'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/flavor-slides/';
+  var flavorSlides = [
+    // Variety Pack (6 extras)
+    [boxImages[0],
+     SLIDE_BASE + 'variety/01.jpg',
+     SLIDE_BASE + 'variety/02.jpg',
+     SLIDE_BASE + 'variety/03.jpg',
+     SLIDE_BASE + 'variety/04.jpg',
+     SLIDE_BASE + 'variety/05.jpg',
+     SLIDE_BASE + 'variety/06.jpg'],
+    // Cookie Dough (5 extras)
+    [boxImages[1],
+     SLIDE_BASE + 'cookie-dough/01.jpg',
+     SLIDE_BASE + 'cookie-dough/02.jpg',
+     SLIDE_BASE + 'cookie-dough/03.jpg',
+     SLIDE_BASE + 'cookie-dough/04.jpg',
+     SLIDE_BASE + 'cookie-dough/05.jpg'],
+    // Caramel Crisp (5 extras)
+    [boxImages[2],
+     SLIDE_BASE + 'caramel-crisp/01.jpg',
+     SLIDE_BASE + 'caramel-crisp/02.jpg',
+     SLIDE_BASE + 'caramel-crisp/03.jpg',
+     SLIDE_BASE + 'caramel-crisp/04.jpg',
+     SLIDE_BASE + 'caramel-crisp/05.jpg'],
+    // Cookies & Cream (5 extras)
+    [boxImages[3],
+     SLIDE_BASE + 'cookies-cream/01.jpg',
+     SLIDE_BASE + 'cookies-cream/02.jpg',
+     SLIDE_BASE + 'cookies-cream/03.jpg',
+     SLIDE_BASE + 'cookies-cream/04.jpg',
+     SLIDE_BASE + 'cookies-cream/05.jpg']
+  ];
+  var selectedSlide = 0; // reset whenever flavor changes
   // Per-flavor max-width (2026-04-16 edits 1, 8): Variety Pack = 320 desktop / 272 mobile;
   // other 3 flavors = 350 (both).
   var boxMaxDesktop = [320, 350, 350, 350];
@@ -73,15 +110,42 @@
       var scrollY = window.scrollY || window.pageYOffset;
       productImg.style.opacity = '0';
       setTimeout(function() {
-        productImg.src = boxImages[selectedFlavor];
+        var slides = flavorSlides[selectedFlavor] || [boxImages[selectedFlavor]];
+        var src = slides[selectedSlide] || slides[0];
+        productImg.src = src;
         var isMobile = window.innerWidth < 640;
-        var mw = (isMobile ? boxMaxMobile : boxMaxDesktop)[selectedFlavor];
+        // Only apply per-flavor max-width to the DEFAULT image (slide 0). Carousel
+        // listing images (slides 1..N) are already wide photos — let them fill the wrap.
+        var mw = (selectedSlide === 0)
+          ? (isMobile ? boxMaxMobile : boxMaxDesktop)[selectedFlavor]
+          : (isMobile ? 350 : 420);
         productImg.style.maxWidth = mw + 'px';
         productImg.style.opacity = '1';
         window.scrollTo({ top: scrollY, behavior: 'instant' });
       }, 150);
     }
   }
+
+  // Carousel navigation (Apr 17): wire up prev/next arrows, if present.
+  function goSlide(delta) {
+    var slides = flavorSlides[selectedFlavor] || [boxImages[selectedFlavor]];
+    var n = slides.length;
+    if (n <= 1) return;
+    selectedSlide = ((selectedSlide + delta) % n + n) % n;
+    updateProductImage();
+  }
+  var prevBtn = document.querySelector('.flavor-arrow-prev');
+  var nextBtn = document.querySelector('.flavor-arrow-next');
+  if (prevBtn) prevBtn.addEventListener('click', function(e){ e.preventDefault(); goSlide(-1); });
+  if (nextBtn) nextBtn.addEventListener('click', function(e){ e.preventDefault(); goSlide(1); });
+  // Preload all slides after a short idle so arrow clicks feel instant.
+  setTimeout(function(){
+    for (var f=0; f<flavorSlides.length; f++) {
+      for (var s=0; s<flavorSlides[f].length; s++) {
+        var im = new Image(); im.src = flavorSlides[f][s];
+      }
+    }
+  }, 1500);
 
   function updateCartButton() {
     if (cartBtn) {
@@ -105,6 +169,7 @@
 
   function selectFlavor(index) {
     selectedFlavor = index;
+    selectedSlide = 0; // reset carousel to the "default" image on flavor change
     flavors.forEach(function(f) { f.classList.remove('active'); });
     if (flavors[index]) flavors[index].classList.add('active');
     updateCartButton();
