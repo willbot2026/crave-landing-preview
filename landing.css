@@ -1083,3 +1083,23 @@ html, body { overflow-x: hidden !important; }
 /* Apr 17 Pauline: desktop-only line break for hero subtitle */
 .hero .desktop-break { display: none; }
 @media (min-width: 640px) { .hero .desktop-break { display: inline; } }
+
+/* ═══ Apr 17D: MARQUEES (moved out of body_html to save inline bytes) ═══ */
+@keyframes craveBadgeScroll68 { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.badge-marquee-section { overflow: hidden !important; white-space: nowrap !important; }
+.badge-marquee-section > .badge-marquee-track {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 48px !important;
+  width: max-content !important;
+  animation: craveBadgeScroll68 68s linear infinite !important;
+  justify-content: flex-start !important;
+  white-space: nowrap !important;
+}
+/* Row C (data-marquee="C") runs 15% faster on desktop only (Pauline Apr 17). */
+@media (min-width: 640px) {
+  .badge-marquee-section[data-marquee="C"] > .badge-marquee-track {
+    animation: craveBadgeScroll68 58s linear infinite !important;
+  }
+}
