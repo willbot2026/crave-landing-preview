@@ -17,12 +17,12 @@
     if (slides.length < 2) return;
     var i = 0;
     slides.forEach(function(s, idx){ s.classList.toggle('active', idx === 0); });
-    // Each slide fully visible for 4s + 1s fade = 5s cycle (Pauline Apr 17).
+    // Each slide fully visible for 5s + 1s fade = 6s cycle (Pauline Apr 17 tweak).
     setInterval(function(){
       slides[i].classList.remove('active');
       i = (i + 1) % slides.length;
       slides[i].classList.add('active');
-    }, 5000);
+    }, 6000);
   })();
 
   // ─── SWAP GIF BG ON DESKTOP ───
