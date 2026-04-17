@@ -1037,3 +1037,14 @@ html, body { overflow-x: hidden !important; }
   position: relative;
   inset: auto;
 }
+
+/* Hero slide base style — shared across all slides (lets us drop inline style=) */
+.hero-product-image-wrap img.hero-slide {
+  width: 100% !important;
+  max-width: 420px !important;
+  max-height: 360px !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  border-radius: 16px !important;
+}
