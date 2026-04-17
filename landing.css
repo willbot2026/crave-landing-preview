@@ -1048,3 +1048,22 @@ html, body { overflow-x: hidden !important; }
   display: block !important;
   border-radius: 16px !important;
 }
+
+/* ═══ Apr 17 Pauline: WHAT'S INSIDE section ═══ */
+.whats-inside {
+  padding: 44px 24px 20px;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.whats-inside h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #1a1a2e;
+  margin: 0;
+}
+@media (min-width: 640px) {
+  .whats-inside { padding: 56px 24px 28px; }
+  .whats-inside h2 { font-size: 30px; }
+}
