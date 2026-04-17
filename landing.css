@@ -36,7 +36,7 @@
 }
 
 /* Kill Shopify's font overrides */
-.hero *, .reason *, .testimonials *, .urgency-section *, .product-section *, .guarantee *, .comparison *, .final-cta *, .announcement-bar * {
+.hero *, .reason *, .testimonials *, .urgency-section *, .product-section *, .guarantee *, .comparison *, .final-cta *, .announcement-bar *, .whats-inside * {
   font-family: 'Inter', -apple-system, sans-serif !important;
 }
 
