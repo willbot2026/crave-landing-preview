@@ -1050,6 +1050,7 @@ html, body { overflow-x: hidden !important; }
 }
 
 /* ═══ Apr 17 Pauline: WHAT'S INSIDE section ═══ */
+/* Heading matches .reason h2 exactly ("Three Layers. Each One Does Something.") */
 .whats-inside {
   padding: 44px 24px 20px;
   text-align: center;
@@ -1057,11 +1058,11 @@ html, body { overflow-x: hidden !important; }
   margin: 0 auto;
 }
 .whats-inside h2 {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  line-height: 1.2;
+  margin: 0 0 18px;
   color: #1a1a2e;
-  margin: 0;
 }
 @media (min-width: 640px) {
   .whats-inside { padding: 56px 24px 28px; }
