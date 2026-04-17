@@ -1018,7 +1018,7 @@ html, body { overflow-x: hidden !important; }
 }
 
 /* ═══ Apr 17 Pauline: hero crossfade slideshow ═══ */
-.hero-product-image-wrap { position: relative; }
+.hero-product-image-wrap { position: relative; margin: 24px auto 0; max-width: 420px; text-align: center; }
 .hero-product-image-wrap img.hero-slide {
   position: absolute;
   inset: 0;
