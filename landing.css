@@ -1067,3 +1067,14 @@ html, body { overflow-x: hidden !important; }
   .whats-inside { padding: 56px 24px 28px; }
   .whats-inside h2 { font-size: 30px; }
 }
+
+/* Apr 17 squeeze: shared badge-marquee-track base (leaves color inline for per-row override) */
+.badge-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  width: max-content;
+}
