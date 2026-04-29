@@ -55,9 +55,10 @@
   // unchanged). Indices 1..N are the listing images Pauline approved in the brief.
   var SLIDE_BASE = 'https://raw.githubusercontent.com/willbot2026/crave-landing-preview/main/images/flavor-slides/';
   var flavorSlides = [
-    // Variety Pack (6 extras)
-    [boxImages[0],
-     SLIDE_BASE + 'variety/01.jpg',
+    // Variety Pack (6 extras) — Apr 29 Pauline: variety/01.jpg (the 12-bar VP box) is now the
+    // default; 3-opened-bars-v2.png moves to slide 1.
+    [SLIDE_BASE + 'variety/01.jpg',
+     boxImages[0],
      SLIDE_BASE + 'variety/02.jpg',
      SLIDE_BASE + 'variety/03.jpg',
      SLIDE_BASE + 'variety/04.jpg',
@@ -150,11 +151,33 @@
     if (n <= 1) return;
     selectedSlide = ((selectedSlide + delta) % n + n) % n;
     updateProductImage();
+    syncThumbActive();
+  }
+  function setSlide(index) {
+    var slides = flavorSlides[selectedFlavor] || [boxImages[selectedFlavor]];
+    if (index < 0 || index >= slides.length) return;
+    selectedSlide = index;
+    updateProductImage();
+    syncThumbActive();
   }
   var prevBtn = document.querySelector('.flavor-arrow-prev');
   var nextBtn = document.querySelector('.flavor-arrow-next');
   if (prevBtn) prevBtn.addEventListener('click', function(e){ e.preventDefault(); goSlide(-1); });
   if (nextBtn) nextBtn.addEventListener('click', function(e){ e.preventDefault(); goSlide(1); });
+
+  // Apr 29 Pauline: thumbnail row replacing the flavor-chip selector. Each .flavor-thumb at
+  // index i jumps the carousel to slide i and highlights itself as active.
+  var thumbs = document.querySelectorAll('.flavor-thumbs .flavor-thumb');
+  function syncThumbActive() {
+    if (!thumbs.length) return;
+    thumbs.forEach(function(t, i) { t.classList.toggle('active', i === selectedSlide); });
+  }
+  thumbs.forEach(function(t, i) {
+    t.style.cursor = 'pointer';
+    t.addEventListener('click', function(e){ e.preventDefault(); setSlide(i); });
+  });
+  syncThumbActive();
+
   // Preload all slides after a short idle so arrow clicks feel instant.
   setTimeout(function(){
     for (var f=0; f<flavorSlides.length; f++) {
