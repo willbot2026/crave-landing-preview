@@ -429,26 +429,25 @@
     var target = document.querySelector('.add-to-cart') || document.querySelector('.product-section');
     if (target) target.scrollIntoView({behavior: 'smooth', block: 'center'});
   }
-  function wireCta(selector, defaultTier) {
+  // Apr 29 Pauline: page now sells the 12-bar Variety Pack only — no tier UI, and CTAs must
+  // not silently flip the cart to a different tier (Wassim hit the bug where Apply Code & Order
+  // pushed selectedTier to 2 and Add To Cart became $110.99). Tier is locked to 0; CTAs only
+  // pin the variety flavor and scroll to the buy box. data-variant-tier attributes on the
+  // anchors are now ignored intentionally.
+  function wireCta(selector) {
     var nodes = document.querySelectorAll(selector);
     nodes.forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        var tier = link.getAttribute('data-variant-tier');
-        tier = tier !== null ? parseInt(tier, 10) : defaultTier;
-        if (isNaN(tier)) tier = defaultTier;
-        selectTier(tier);
+        selectTier(0);
         selectFlavor(0); // Variety Pack
         scrollToAddToCart();
       });
     });
   }
-  // "Try Crave Risk-Free" CTAs: default VP 36-count
-  wireCta('a.hero-cta, a.reason-cta', 2);
-  // "Apply Code & Order": VP 36-count (data-variant-tier="2" on element)
-  wireCta('a.urgency-cta', 2);
-  // Bottom yellow "$39.99" button in .final-cta: VP 12-count (data-variant-tier="0" on element)
-  wireCta('.final-cta a', 0);
+  wireCta('a.hero-cta, a.reason-cta');
+  wireCta('a.urgency-cta');
+  wireCta('.final-cta a');
 
   // ─── MARQUEE HELPER (2026-04-16: 68s infinite, desktop + mobile) ───
   var mstyle = document.createElement('style');
