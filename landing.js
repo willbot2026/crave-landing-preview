@@ -178,6 +178,52 @@
   });
   syncThumbActive();
 
+  // Apr 29 Pauline: swipe / drag support on the product carousel. Pointer events unify mouse
+  // and touch — a horizontal drag past SWIPE_THRESHOLD navigates to the next/prev slide. We
+  // set touch-action: pan-y so vertical page scroll still works on mobile.
+  var imageWrap = document.querySelector('.product-section .product-image-wrap');
+  if (imageWrap) {
+    imageWrap.style.touchAction = 'pan-y';
+    imageWrap.style.userSelect = 'none';
+    imageWrap.style.cursor = 'grab';
+    imageWrap.addEventListener('dragstart', function(e){ e.preventDefault(); });
+
+    var swipeStartX = null, swipeStartY = null, swipeStartTime = 0, swipePointerId = null;
+    var SWIPE_THRESHOLD = 40;       // pixels of horizontal motion to count as a swipe
+    var SWIPE_MAX_TIME  = 800;      // ms — slow drags are not counted
+
+    imageWrap.addEventListener('pointerdown', function(e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      // Don't start a swipe when the press lands on an arrow button — let the click handler win.
+      if (e.target && e.target.closest && e.target.closest('.flavor-arrow')) return;
+      swipeStartX = e.clientX;
+      swipeStartY = e.clientY;
+      swipeStartTime = Date.now();
+      swipePointerId = e.pointerId;
+      imageWrap.style.cursor = 'grabbing';
+      try { imageWrap.setPointerCapture && imageWrap.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    function endSwipe(e) {
+      if (swipeStartX === null) return;
+      var dx = e.clientX - swipeStartX;
+      var dy = e.clientY - swipeStartY;
+      var dt = Date.now() - swipeStartTime;
+      swipeStartX = swipeStartY = null;
+      swipePointerId = null;
+      imageWrap.style.cursor = 'grab';
+      if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) && dt < SWIPE_MAX_TIME) {
+        goSlide(dx < 0 ? 1 : -1);
+      }
+    }
+    imageWrap.addEventListener('pointerup', endSwipe);
+    imageWrap.addEventListener('pointercancel', function(){
+      swipeStartX = swipeStartY = null;
+      swipePointerId = null;
+      imageWrap.style.cursor = 'grab';
+    });
+  }
+
   // Preload all slides after a short idle so arrow clicks feel instant.
   setTimeout(function(){
     for (var f=0; f<flavorSlides.length; f++) {
