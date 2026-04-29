@@ -355,19 +355,15 @@
       })
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        cartBtn.style.opacity = '1';
-        cartBtn.disabled = false;
-        updateCartButton();
-
         if (data.items || data.id) {
-          // Get updated cart count
-          fetch('/cart.js')
-            .then(function(r) { return r.json(); })
-            .then(function(cart) {
-              updateThemeCartBadge(cart.item_count);
-              // Refresh the drawer with new content, then open it
-              refreshAndOpenCart();
-            });
+          // Apr 29 Pauline: skip the cart-drawer flow \u2014 after adding the variant, send the
+          // user straight to checkout via /discount/<code>?redirect=/checkout, which sets the
+          // discount cookie before bouncing to checkout so NIGHTFIX is applied automatically.
+          window.location.href = '/discount/NIGHTFIX?redirect=/checkout';
+        } else {
+          cartBtn.style.opacity = '1';
+          cartBtn.disabled = false;
+          updateCartButton();
         }
       })
       .catch(function() {
